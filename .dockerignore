@@ -1,0 +1,9 @@
+.git
+.gitignore
+.venv
+__pycache__
+*.pyc
+.python-version
+.claude
+.ruff_cache
+.pytest_cache

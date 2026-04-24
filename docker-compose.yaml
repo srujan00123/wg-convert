@@ -1,0 +1,17 @@
+services:
+  wg-convert:
+    build: .
+    restart: unless-stopped
+    environment:
+      - SERVICE_FQDN_WGCONVERT_8501=https://${DOMAIN:-wg.example.com}
+      # ^ Coolify magic variable — set the domain in the Coolify UI and it
+      #   auto-populates this. For plain docker compose, set DOMAIN in a .env file.
+    expose:
+      - "8501"
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.wg-convert.rule=Host(`${DOMAIN:-wg.example.com}`)
+      - traefik.http.routers.wg-convert.entrypoints=https
+      - traefik.http.routers.wg-convert.tls=true
+      - traefik.http.routers.wg-convert.tls.certresolver=letsencrypt
+      - traefik.http.services.wg-convert.loadbalancer.server.port=8501
